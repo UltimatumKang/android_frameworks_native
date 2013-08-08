@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "Trace"
-
-#include <cutils/properties.h>
-#include <utils/Log.h>
-#include <utils/Trace.h>
 #include <utils/misc.h>
+#include <utils/Trace.h>
 
 namespace android {
 
@@ -55,11 +51,9 @@ void Tracer::init() {
     }
 }
 
-void Tracer::loadSystemProperty() {
-    char value[PROPERTY_VALUE_MAX];
-    property_get("debug.atrace.tags.enableflags", value, "0");
-    sEnabledTags = (strtoll(value, NULL, 0) & ATRACE_TAG_VALID_MASK)
-            | ATRACE_TAG_ALWAYS;
-}
+static void traceInit() __attribute__((constructor));
 
-} // namespace andoid
+static void traceInit()
+{
+    ::android::add_sysprop_change_callback(atrace_update_tags, 0);
+}
