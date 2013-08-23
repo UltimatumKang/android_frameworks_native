@@ -57,10 +57,11 @@ ifneq ($(filter generic%,$(TARGET_DEVICE)),)
 endif
 
 ifeq ($(call is-vendor-board-platform,QCOM),true)
-ifneq ($(TARGET_QCOM_DISPLAY_VARIANT),legacy)
-	LOCAL_CFLAGS += -DUSE_NATIVE_FENCE_SYNC
+endif
 ifeq ($(TARGET_BOARD_PLATFORM), tegra3)
 	LOCAL_CFLAGS += -DDONT_USE_FENCE_SYNC
+ifneq ($(TARGET_QCOM_DISPLAY_VARIANT),legacy)
+	LOCAL_CFLAGS += -DUSE_NATIVE_FENCE_SYNC
 endif
 endif
 
